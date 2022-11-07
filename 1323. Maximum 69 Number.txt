@@ -1,0 +1,87 @@
+1323. Maximum 69 Number
+Easy
+
+1919
+
+172
+
+Add to List
+
+Share
+You are given a positive integer num consisting only of digits 6 and 9.
+
+Return the maximum number you can get by changing at most one digit (6 becomes 9, and 9 becomes 6).
+
+ 
+
+Example 1:
+
+Input: num = 9669
+Output: 9969
+Explanation: 
+Changing the first digit results in 6669.
+Changing the second digit results in 9969.
+Changing the third digit results in 9699.
+Changing the fourth digit results in 9666.
+The maximum number is 9969.
+Example 2:
+
+Input: num = 9996
+Output: 9999
+Explanation: Changing the last digit 6 to 9 results in the maximum number.
+Example 3:
+
+Input: num = 9999
+Output: 9999
+Explanation: It is better not to apply any change.
+ 
+
+Constraints:
+
+1 <= num <= 104
+num consists of only 6 and 9 digits.
+Accepted
+172,176
+Submissions
+210,957
+
+
+
+
+
+class Solution {
+public:
+    
+    void util(vector<int> &vec) {
+        for(int i=0; i<vec.size(); i++)  {
+            if(vec[i]==6)   {
+                vec[i] = 9;
+                return;
+            }
+        }
+        return;
+    }
+    
+    int maximum69Number (int num) {
+        
+        int n = num;
+        vector<int> vec;
+        
+        while(n>0)  {
+            int r = n%10;
+            vec.push_back(r);
+            n = n/10;
+        }
+        
+        reverse(vec.begin(), vec.end());
+        util(vec);
+        int res = 0;
+        
+        for(int i=0; i<vec.size(); i++) {
+            res *= 10;
+            res += vec[i];
+        }
+        
+        return res;
+    }
+};
