@@ -1,0 +1,25 @@
+class Solution {
+    unordered_map<int,int> dp;
+public:
+    int checkAlternate(vector<int> &nums, int idx, int n, int &res) {
+        //base case 
+        if(idx>=n)  {   return 0;   }
+        //using dp on my own (without actually studying it)
+        if(dp.find(idx)!=dp.end())  {   return dp[idx]; }
+        //processing 
+        int includeSum = nums[idx] + checkAlternate(nums,idx+2,n,res);
+        int excludeSum = checkAlternate(nums,idx+1,n,res);
+        //updateing res variable
+        res = max(includeSum,excludeSum);
+        dp[idx] = res;
+        //returning 
+        return res;
+    }
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        int idx = 0;
+        int res = 0;
+        return checkAlternate(nums,idx,n,res);
+        return res;
+    }
+};
