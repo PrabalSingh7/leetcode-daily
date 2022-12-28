@@ -1,0 +1,101 @@
+1962. Remove Stones to Minimize the Total
+Medium
+1.1K
+93
+Companies
+You are given a 0-indexed integer array piles, where piles[i] represents the number of stones in the ith pile, and an integer k. You should apply the following operation exactly k times:
+
+Choose any piles[i] and remove floor(piles[i] / 2) stones from it.
+Notice that you can apply the operation on the same pile more than once.
+
+Return the minimum possible total number of stones remaining after applying the k operations.
+
+floor(x) is the greatest integer that is smaller than or equal to x (i.e., rounds x down).
+
+ 
+
+Example 1:
+
+Input: piles = [5,4,9], k = 2
+Output: 12
+Explanation: Steps of a possible scenario are:
+- Apply the operation on pile 2. The resulting piles are [5,4,5].
+- Apply the operation on pile 0. The resulting piles are [3,4,5].
+The total number of stones in [3,4,5] is 12.
+Example 2:
+
+Input: piles = [4,3,6,7], k = 3
+Output: 12
+Explanation: Steps of a possible scenario are:
+- Apply the operation on pile 2. The resulting piles are [4,3,3,7].
+- Apply the operation on pile 3. The resulting piles are [4,3,3,4].
+- Apply the operation on pile 0. The resulting piles are [2,3,3,4].
+The total number of stones in [2,3,3,4] is 12.
+ 
+
+Constraints:
+
+1 <= piles.length <= 105
+1 <= piles[i] <= 104
+1 <= k <= 105
+Accepted
+51.1K
+Submissions
+84K
+Acceptance Rate
+60.9%
+
+
+
+Intuition
+Maximum element required at each operation
+
+Approach
+As, maximum element required at each operation , thus we can use maxHeap here.
+And , we can maintain a current Sum variable to keep track of net sum of array after each iteration.
+
+Complexity
+Time complexity : O(nlogn)
+Space complexity : O(1)
+Code
+please upvote , if you found it useful :)
+
+class Solution {
+public:
+    int minStoneSum(vector<int>& piles, int k) {
+        
+        //declaring minHeap & current sum variable
+        priority_queue<int> pq;
+        int currSum = 0;
+
+        //pushing elements in minHeap & calculating the initial sum of array
+        for(int i=0; i<piles.size(); i++)   {
+            pq.push(piles[i]);
+            currSum += piles[i];
+        }
+
+        //performing required operation k times
+        for(int i=0; i<k; i++)  {
+
+            //getting the biggest element at each operation
+            int top = pq.top();
+            pq.pop();
+            
+            //subtracting the extracted element for currSum
+            currSum -= top;
+            
+            //performing the floor (ele/2) on that extracted element
+            if(top%2==0)    top /= 2;
+            else top = (top/2) + 1;
+            
+            //adding the updated value of extracted element in currSum
+            currSum += top;
+            
+            //pushing back the updated value of extracted element in menheap
+            pq.push(top);
+        }
+
+        //returning the new currSum
+        return currSum;
+    }
+};
