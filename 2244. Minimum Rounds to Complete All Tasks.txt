@@ -1,0 +1,101 @@
+2244. Minimum Rounds to Complete All Tasks
+Medium
+2.1K
+57
+Companies
+You are given a 0-indexed integer array tasks, where tasks[i] represents the difficulty level of a task. In each round, you can complete either 2 or 3 tasks of the same difficulty level.
+
+Return the minimum rounds required to complete all the tasks, or -1 if it is not possible to complete all the tasks.
+
+ 
+
+Example 1:
+
+Input: tasks = [2,2,3,3,2,4,4,4,4,4]
+Output: 4
+Explanation: To complete all the tasks, a possible plan is:
+- In the first round, you complete 3 tasks of difficulty level 2. 
+- In the second round, you complete 2 tasks of difficulty level 3. 
+- In the third round, you complete 3 tasks of difficulty level 4. 
+- In the fourth round, you complete 2 tasks of difficulty level 4.  
+It can be shown that all the tasks cannot be completed in fewer than 4 rounds, so the answer is 4.
+Example 2:
+
+Input: tasks = [2,3,3]
+Output: -1
+Explanation: There is only 1 task of difficulty level 2, but in each round, you can only complete either 2 or 3 tasks of the same difficulty level. Hence, you cannot complete all the tasks, and the answer is -1.
+ 
+
+Constraints:
+
+1 <= tasks.length <= 105
+1 <= tasks[i] <= 109
+Accepted
+104.1K
+Submissions
+164.1K
+Acceptance Rate
+63.4%
+
+
+
+
+C++ || Greedy || Mathematical Approach || HashTable
+_prabal_singh_
+100 Days Badge 2022
+3
+2 minutes ago
+Intuition
+Basic Mathematical Approach
+
+Approach
+Calculating the number of occurences of each difficulty level.
+For each occurences basic math function will given the minimum rounds required :-
+minRounds = val/3
+val%3!=0 ? minRounds+=1 : minRounds+=0
+Complexity
+Time complexity : O(n)
+Space complexity (worst case) : On)
+Code
+class Solution {
+public:
+    int minimumRounds(vector<int>& tasks) {
+        
+        // (difficulty - number of occurences)
+        unordered_map<int,int> mp;
+        int count = 0;
+
+        // calculating the total occureneces of each difficulty level
+        for(auto i : tasks) {
+            mp[i]++;
+        }
+
+        for(auto it : mp)   {
+            int num = it.second;
+            
+            if(num==1)  return -1;
+            
+            int currRounds = 0;
+
+            // number of times we can straight forward do 3 at a time
+            currRounds = num/3;
+            // occurenecs left after doing continous possible 3 at a time
+            int check = num % 3;
+
+            // we overdid one time , so decresing it & doing tro times 2 instead
+            if(check == 1)  {
+                currRounds --;
+                currRounds += 2;
+            }
+            // only two occerences left so doing 2 once at time more
+            else if(check == 2) {
+                currRounds += 1;
+            }
+
+            //adding the rounds for current difficulty in total rounds
+            count += currRounds;
+        }
+
+        return count;
+    }
+};
