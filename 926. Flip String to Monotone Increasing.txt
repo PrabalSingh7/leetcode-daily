@@ -1,0 +1,78 @@
+926. Flip String to Monotone Increasing
+Medium
+2.4K
+109
+Companies
+A binary string is monotone increasing if it consists of some number of 0's (possibly none), followed by some number of 1's (also possibly none).
+
+You are given a binary string s. You can flip s[i] changing it from 0 to 1 or from 1 to 0.
+
+Return the minimum number of flips to make s monotone increasing.
+
+ 
+
+Example 1:
+
+Input: s = "00110"
+Output: 1
+Explanation: We flip the last digit to get 00111.
+Example 2:
+
+Input: s = "010110"
+Output: 2
+Explanation: We flip to get 011111, or alternatively 000111.
+Example 3:
+
+Input: s = "00011000"
+Output: 2
+Explanation: We flip to get 00000000.
+ 
+
+Constraints:
+
+1 <= s.length <= 105
+s[i] is either '0' or '1'.
+Accepted
+114K
+Submissions
+190.5K
+Acceptance Rate
+59.8%
+
+
+C++ || Math || Explained || Commented code
+_prabal_singh_
+100 Days Badge 2022
+3
+a few seconds ago
+Intuition
+Math Based Simple Approach
+
+Approach
+We will miantain two variable:
+1. ones = count the number of ones
+2. cnt_flips = number of flips done
+
+cnt_flips variable is used for zero :- everytime we encounter a zero we cnt_flips++, then we take the min of cnt_flips & ones for that position.
+(i.e. for every position we will keep track of if previously their were more of zeros or ones , we have to flip the minimum to make the net array monotonically increasing)
+
+Complexity
+Time complexity : O(n)
+Space complexity : O(1)
+Code
+class Solution {
+public:
+    int minFlipsMonoIncr(string s) {
+        int cnt_flips = 0;
+        int ones = 0;
+
+        for(auto i : s) {
+            if(i=='1')  ones++;
+            else cnt_flips++;
+            //minimizing flips at each position 
+            cnt_flips = min(cnt_flips,ones);
+        }
+
+        return cnt_flips;
+    }
+};
