@@ -1,0 +1,108 @@
+491. Non-decreasing Subsequences
+Medium
+1.8K
+163
+Companies
+Given an integer array nums, return all the different possible non-decreasing subsequences of the given array with at least two elements. You may return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [4,6,7,7]
+Output: [[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]]
+Example 2:
+
+Input: nums = [4,4,3,2,1]
+Output: [[4,4]]
+ 
+
+Constraints:
+
+1 <= nums.length <= 15
+-100 <= nums[i] <= 100
+Accepted
+88.2K
+Submissions
+168K
+Acceptance Rate
+52.5%
+
+
+
+
+C++ || Recursion || Explained Approach || Commented Code
+_prabal_singh_
+100 Days Badge 2022
+3
+a minute ago
+Intuition
+Some sort of Recussive Approach as Subsequences.
+
+Approach
+We will select or not select each element as :-
+if(path.back()<=)
+-> select
+backtrack
+-> not select
+else
+-> not select
+
+Complexity
+Time complexity : O(2^n (2^n log[2^n]))
+Space complexity : O(good subsequences possible)
+Code
+class Solution {
+    vector<vector<int>> result;
+    //using set to avoid duplicate values
+    set<vector<int>> res;
+public:
+    void fun(int idx, vector<int> nums, vector<int> &path)  {
+        //base case
+        if(idx>=nums.size())    {
+            if(path.size()>=2)  {
+                res.insert(path);
+            }
+            return;
+        }
+
+        int val = nums[idx];
+
+        if(path.size()>0)   {
+            if(path.back()<=val) {          //can select
+                // selecting 
+                path.push_back(val);
+                fun(idx+1,nums,path);
+                path.pop_back();        //back-tracking
+                // not selecting
+                fun(idx+1,nums,path);
+            }
+            else {                      //can't select
+                fun(idx+1,nums,path);
+            }
+        }
+        else {      //case when out path is empty
+            path.push_back(val);
+            fun(idx+1,nums,path);
+            path.pop_back();
+            fun(idx+1,nums,path);
+        }
+
+        return;
+    }
+
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> path;
+
+        fun(0,nums,path);
+        
+        for (auto it = res.begin();it != res.end();++it) 
+            result.push_back(*it);
+
+        return result;
+    }
+};
+0
+0
+
