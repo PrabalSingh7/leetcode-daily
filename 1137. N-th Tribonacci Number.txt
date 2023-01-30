@@ -1,0 +1,80 @@
+1137. N-th Tribonacci Number
+Easy
+3K
+143
+Companies
+The Tribonacci sequence Tn is defined as follows: 
+
+T0 = 0, T1 = 1, T2 = 1, and Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+
+Given n, return the value of Tn.
+
+ 
+
+Example 1:
+
+Input: n = 4
+Output: 4
+Explanation:
+T_3 = 0 + 1 + 1 = 2
+T_4 = 1 + 1 + 2 = 4
+Example 2:
+
+Input: n = 25
+Output: 1389537
+ 
+
+Constraints:
+
+0 <= n <= 37
+The answer is guaranteed to fit within a 32-bit integer, ie. answer <= 2^31 - 1.
+Accepted
+416.7K
+Submissions
+654.5K
+Acceptance Rate
+63.7%
+
+
+
+
+
+
+
+C++ || DYNAMIC PROGRAMMING || RECURSSION || EXPLAINED APPROACH || COMMENTED CODE
+_prabal_singh_
+100 Days Badge 2022
+3
+a minute ago
+Intuition
+Use recurence relation with dp.
+
+Approach
+Simple recurence relation : using the equation
+A th = A-1 th + A-2 th + A-3 th
+Store each calculated sub-value using in map for better performance.
+
+Complexity
+Time complexity:
+Space complexity : O(N)
+Code
+class Solution {
+    unordered_map<int,int> mp;
+public:
+    int fun(int num)    {
+        //base case
+        if(num<=0)  return 0;
+        if(num==1 || num==2)    return 1;
+
+        //checking : if value already calculated
+        if(mp.find(num)!=mp.end())
+            return mp[num];
+        
+        //recurssive relation
+        return mp[num] = fun(num-1) + fun(num-2) + fun(num-3);
+    }
+
+    int tribonacci(int n) {
+        return fun(n);
+    }
+};
