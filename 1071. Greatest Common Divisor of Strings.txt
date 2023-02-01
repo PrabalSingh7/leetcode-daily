@@ -1,0 +1,76 @@
+1071. Greatest Common Divisor of Strings
+Easy
+2.4K
+382
+Companies
+For two strings s and t, we say "t divides s" if and only if s = t + ... + t (i.e., t is concatenated with itself one or more times).
+
+Given two strings str1 and str2, return the largest string x such that x divides both str1 and str2.
+
+ 
+
+Example 1:
+
+Input: str1 = "ABCABC", str2 = "ABC"
+Output: "ABC"
+Example 2:
+
+Input: str1 = "ABABAB", str2 = "ABAB"
+Output: "AB"
+Example 3:
+
+Input: str1 = "LEET", str2 = "CODE"
+Output: ""
+ 
+
+Constraints:
+
+1 <= str1.length, str2.length <= 1000
+str1 and str2 consist of English uppercase letters.
+Accepted
+116.6K
+Submissions
+214.8K
+Acceptance Rate
+54.3%
+Seen this question in a real interview before?
+1/4
+Yes
+No
+Similar Questions
+Related Topics
+
+
+
+
+
+C++ || Explained || Commented Code
+_prabal_singh_
+100 Days Badge 2022
+3
+a few seconds ago
+Intuition
+Basic string comparision & GCD
+
+Approach
+We will compare the str1 + str2 AND str2 + str1,
+if they are equal that means : condition satisfied as
+abcabc + abc == abc + abcabc
+
+Now, we will find GCD of them as the greatest possible common string in them
+gcd(6,4) = 2
+gcd(ababab,abab) = ab
+
+Complexity
+Time complexity :
+Space complexity :
+Code
+class Solution {
+public:
+    string gcdOfStrings(string str1, string str2) {
+        if(str1+str2 == str2+str1)  {
+            return str1.substr(0, gcd(str1.size(),str2.size()));
+        }
+        return "";
+    }
+};
