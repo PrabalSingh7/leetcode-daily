@@ -1,0 +1,104 @@
+953. Verifying an Alien Dictionary
+Easy
+4.3K
+1.4K
+Companies
+In an alien language, surprisingly, they also use English lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters.
+
+Given a sequence of words written in the alien language, and the order of the alphabet, return true if and only if the given words are sorted lexicographically in this alien language.
+
+ 
+
+Example 1:
+
+Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+Output: true
+Explanation: As 'h' comes before 'l' in this language, then the sequence is sorted.
+Example 2:
+
+Input: words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
+Output: false
+Explanation: As 'd' comes after 'l' in this language, then words[0] > words[1], hence the sequence is unsorted.
+Example 3:
+
+Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+Output: false
+Explanation: The first three characters "app" match, and the second string is shorter (in size.) According to lexicographical rules "apple" > "app", because 'l' > '∅', where '∅' is defined as the blank character which is less than any other character (More info).
+ 
+
+Constraints:
+
+1 <= words.length <= 100
+1 <= words[i].length <= 20
+order.length == 26
+All characters in words[i] and order are English lowercase letters.
+Accepted
+436.4K
+Submissions
+805.4K
+Acceptance Rate
+54.2%
+
+
+
+
+C++ || Hash-Map || Comparison || Explained Approach || Commented Code
+_prabal_singh_
+100 Days Badge 2022
+3
+a few seconds ago
+Intuition
+Comparing characters considering their giver lexicographical power.
+
+Approach
+Firstly , we will give characters thier lexicographical power as oer the giver order string.
+Secondly, we will compare two words till an uncommon character is found.
+Now the case is false if :-
+a. the power of first word's character is greater than second word's charcter
+b. length of first word is more even though all elements are same.
+
+Complexity
+Worst Case Time complexity : O(word.size()*k)
+Space complexity : O(1)
+Code
+class Solution {
+public:
+    bool isAlienSorted(vector<string>& words, string order) {
+        //using map to store lexicographical powers of each char
+        unordered_map<char,int> mp;
+        for(int i=0; i<26; i++) {
+            mp[order[i]] = 26-i;
+        }
+
+        int n = words.size();
+        if(n==1)    return true;
+
+        for(int i=0; i<n-1; i++)  {
+            //calculating lenth of both words for comparision
+            int fl = words[i].size();
+            int sl = words[i+1].size();
+            int m = min(fl,sl);
+            bool ch = true;
+
+            for(int j=0; j<m; j++)    {
+                char fc = words[i][j];
+                char sc = words[i+1][j];
+                if(fc==sc)  continue;
+                //uncommon chaarcter found here
+                int val_fc = mp[fc];
+                int val_sc = mp[sc];
+                //case for false value (case1)
+                if(val_fc < val_sc)   return false;
+                ch = false;
+                break;
+            }
+            if(ch)  {
+                //case for false value (case2)
+                if(fl>sl)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+};
