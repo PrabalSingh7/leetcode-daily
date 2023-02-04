@@ -1,0 +1,88 @@
+567. Permutation in String
+Medium
+9.1K
+283
+Companies
+Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.
+
+In other words, return true if one of s1's permutations is the substring of s2.
+
+ 
+
+Example 1:
+
+Input: s1 = "ab", s2 = "eidbaooo"
+Output: true
+Explanation: s2 contains one permutation of s1 ("ba").
+Example 2:
+
+Input: s1 = "ab", s2 = "eidboaoo"
+Output: false
+ 
+
+Constraints:
+
+1 <= s1.length, s2.length <= 104
+s1 and s2 consist of lowercase English letters.
+Accepted
+594.3K
+Submissions
+1.3M
+Acceptance Rate
+44.3%
+
+
+
+
+
+C++ || Explained Code || mapping & sliding window approach
+_prabal_singh_
+100 Days Badge 2022
+3
+a minute ago
+Intuition
+We need to check for if needed characters are present in S2 without space or not.
+
+Approach
+Complexity
+Time complexity : O(n*k)
+Space complexity : O(n)
+Code
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        
+        //using map to store frequency of characters of s1
+        unordered_map<char,int> mp1;
+        int m = s1.size();
+        int n = s2.size();
+        for(int i=0; i<m; i++)  {
+            mp1[s1[i]]++;
+        }
+
+        for(int i=0; i<n-m+1; i++)  {
+            //using another map to count freq of characters of s2 in each iteration
+            unordered_map<char,int> mp2;
+
+            for(int j=i; j<i+m && j<n; j++) {
+                char ch = s2[j];
+                //case when when current character is not present in s1
+                if(mp1.find(ch)==mp1.end())  {
+                    i = j;
+                    break;
+                }
+
+                mp2[ch]++;
+                //case when count of a char in current string exceeds then required
+                if(mp2[ch] > mp1[ch]) 
+                    break;
+
+                //case when string permutation is found
+                if(j==i+m-1) 
+                    return true;
+            }
+        }        
+
+        return false;    
+    }
+};
