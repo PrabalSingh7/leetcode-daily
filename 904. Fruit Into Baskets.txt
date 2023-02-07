@@ -1,0 +1,128 @@
+904. Fruit Into Baskets
+Medium
+2.9K
+220
+Companies
+You are visiting a farm that has a single row of fruit trees arranged from left to right. The trees are represented by an integer array fruits where fruits[i] is the type of fruit the ith tree produces.
+
+You want to collect as much fruit as possible. However, the owner has some strict rules that you must follow:
+
+You only have two baskets, and each basket can only hold a single type of fruit. There is no limit on the amount of fruit each basket can hold.
+Starting from any tree of your choice, you must pick exactly one fruit from every tree (including the start tree) while moving to the right. The picked fruits must fit in one of your baskets.
+Once you reach a tree with fruit that cannot fit in your baskets, you must stop.
+Given the integer array fruits, return the maximum number of fruits you can pick.
+
+ 
+
+Example 1:
+
+Input: fruits = [1,2,1]
+Output: 3
+Explanation: We can pick from all 3 trees.
+Example 2:
+
+Input: fruits = [0,1,2,2]
+Output: 3
+Explanation: We can pick from trees [1,2,2].
+If we had started at the first tree, we would only pick from trees [0,1].
+Example 3:
+
+Input: fruits = [1,2,3,2,2]
+Output: 4
+Explanation: We can pick from trees [2,3,2,2].
+If we had started at the first tree, we would only pick from trees [1,2].
+ 
+
+Constraints:
+
+1 <= fruits.length <= 105
+0 <= fruits[i] < fruits.length
+Accepted
+287.1K
+Submissions
+664.8K
+Acceptance Rate
+43.2%
+
+
+
+
+C++ || sliding window || EXPLAINED Approach || Commented Code
+_prabal_singh_
+100 Days Badge 2022
+3
+a few seconds ago
+Intuition :-
+Some type of Sliding Window Approach
+
+Approach :-
+we are using sliding window on the following parameters
+Two of our baskets have two unique fruit types.
+Variable i : start of window, j : end of window , u : relocate i.
+If curent fruit is not present in two of our baskets, we evaluate the length of current streak AND update window.
+Complexity
+Time complexity : O(n*k)
+Space complexity : O(1)
+Code
+class Solution {
+public:
+    int totalFruit(vector<int>& arr) {
+
+        int n = arr.size();
+        
+        //edge case 
+        if(n<=2)    return n;
+
+        
+        //initialing helping variables for sliding window 
+        int i = 0;
+        int j = 0;
+        int u = 0;  //used to update value of i
+        int mx = -1;    //variable used to give back the result
+        
+        
+        //using two int variable to track fruit of two baskets 
+        int first_basket = arr[i];    //initializing the second fruit basket
+        int k=1;
+        while(arr[k]==first_basket)   {       //finding the first-second fruit
+            //only one fruit everywhere
+            if(k>=n-1)    return n;
+            k++;
+        }
+        int second_basket = arr[k];    //initializing the second fruit basket
+
+
+        //using fpr loop to implement sliding window
+        for(int j=k; j<n; j++)  {
+            int curr_fruit = arr[j];
+
+            //edge case for last fruit index             
+            if(j==n-1)  {
+                //case if its one of our basket fruit
+                if(curr_fruit==first_basket || curr_fruit==second_basket)
+                    mx = max(mx,j-i+1);
+            }
+            
+            //found some new fruit 
+            if(curr_fruit!=first_basket && curr_fruit!=second_basket)     {
+                //evaluating the current streak
+                int curr_streak_value = j-i;
+                mx = max(curr_streak_value,mx);
+                
+                //updating our basket values                
+                int new_first_basket = arr[j-1];
+                second_basket = curr_fruit;
+                first_basket = new_first_basket;
+                u=j;
+                
+                //finding the last presence of discareded fruit
+                while(arr[u]==new_first_basket || arr[u]==curr_fruit)   {
+                    u--;
+                }
+                i=u+1;
+            }
+        }
+
+        return mx;
+    }
+};
