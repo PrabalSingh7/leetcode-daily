@@ -1,0 +1,151 @@
+1011. Capacity To Ship Packages Within D Days
+Medium
+7.3K
+159
+Companies
+A conveyor belt has packages that must be shipped from one port to another within days days.
+
+The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship with packages on the conveyor belt (in the order given by weights). We may not load more weight than the maximum weight capacity of the ship.
+
+Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within days days.
+
+ 
+
+Example 1:
+
+Input: weights = [1,2,3,4,5,6,7,8,9,10], days = 5
+Output: 15
+Explanation: A ship capacity of 15 is the minimum to ship all the packages in 5 days like this:
+1st day: 1, 2, 3, 4, 5
+2nd day: 6, 7
+3rd day: 8
+4th day: 9
+5th day: 10
+
+Note that the cargo must be shipped in the order given, so using a ship of capacity 14 and splitting the packages into parts like (2, 3, 4, 5), (1, 6, 7), (8), (9), (10) is not allowed.
+Example 2:
+
+Input: weights = [3,2,2,4,1,4], days = 3
+Output: 6
+Explanation: A ship capacity of 6 is the minimum to ship all the packages in 3 days like this:
+1st day: 3, 2
+2nd day: 2, 4
+3rd day: 1, 4
+Example 3:
+
+Input: weights = [1,2,3,1,1], days = 4
+Output: 3
+Explanation:
+1st day: 1
+2nd day: 2
+3rd day: 3
+4th day: 1, 1
+ 
+
+Constraints:
+
+1 <= days <= weights.length <= 5 * 104
+1 <= weights[i] <= 500
+Accepted
+246.3K
+Submissions
+364.9K
+Acceptance Rate
+67.5%
+
+
+
+C++ || Binary Search || Explained Approach || Commented Code
+_prabal_singh_
+100 Days Badge 2022
+4
+a minute ago
+Intuition
+Binary Search
+
+Approach
+We have to find the smallest possible value from a range , thus best way to do that is to perform BINARY SEARCH.
+
+As, we are applying binary search here, so the range for binary search will be :-
+lowerLimit = largest weight value of the packeage(s)
+upperLimit = net sum of all packages
+
+We will check if current mid value can be a possible value or not with the help of a function : bool check()
+This function returns false if current value of mid[weigth limit of ship] can not fullfill the requirement of days.
+And return true & update the result value if it can.
+
+download (2).jfif
+
+Complexity
+Time complexity : O(log(SUM-LARGEST))
+Space complexity : O(1)
+Code
+class Solution {
+public:
+    //helping function to check if current choosen value can fullfill the criteria or not.
+    bool check(int mid, vector<int>& weights, int days, int &result)    {
+        int cnt = 1;
+        int curr = 0;
+        for(int i=0; i<weights.size(); i++) {
+            int num = weights[i];
+            curr += num;
+            //cases when the current weigth of packages exceeds the ship limit
+            if(curr>mid)    {
+                curr = num;
+                cnt++;
+            }
+            else if(curr==mid)  {
+                curr = 0;
+                //if last package then no need of another ship
+                if(i!=weights.size()-1)
+                    cnt++;
+            }
+        }
+        
+        //case when the ship with current(mid) weight limit takes more time than aloted(days)
+        if(cnt>days)    
+            return false;
+        //possible result case [less / equal time than aloted]
+        result = min(result,mid);
+        return true;
+    }
+
+
+    int shipWithinDays(vector<int>& weights, int days) {
+        //helping variables
+        int largest = INT_MIN;
+        double sum = 0;
+        int n = weights.size();
+
+        //finding the net sum & largest weight 
+        for(int i=0; i<n; i++)  {
+            largest = max(largest,weights[i]);
+            sum += weights[i];
+        }
+
+        //initializing variables for binary search
+        int low = largest;
+        int high = sum;
+        int result = sum;
+
+        //binary seacrh
+        while(low<=high)    {
+            int mid = (high+low)/2;
+            //case when a possible value is found, so trying to find a smaller possible value.
+            if(check(mid,weights,days,result))  {
+                high = mid-1;
+            }
+            //case when a possible value is found, so trying to find a smaller possible value.
+            else {
+                low = mid+1;
+            }
+        }
+
+        return result;
+    }
+};
+sad-thumbs-up-cat.3.meme.webp
+
+0
+0
+
