@@ -1,0 +1,118 @@
+2187. Minimum Time to Complete Trips
+Medium
+865
+54
+Companies
+You are given an array time where time[i] denotes the time taken by the ith bus to complete one trip.
+
+Each bus can make multiple trips successively; that is, the next trip can start immediately after completing the current trip. Also, each bus operates independently; that is, the trips of one bus do not influence the trips of any other bus.
+
+You are also given an integer totalTrips, which denotes the number of trips all buses should make in total. Return the minimum time required for all buses to complete at least totalTrips trips.
+
+ 
+
+Example 1:
+
+Input: time = [1,2,3], totalTrips = 5
+Output: 3
+Explanation:
+- At time t = 1, the number of trips completed by each bus are [1,0,0]. 
+  The total number of trips completed is 1 + 0 + 0 = 1.
+- At time t = 2, the number of trips completed by each bus are [2,1,0]. 
+  The total number of trips completed is 2 + 1 + 0 = 3.
+- At time t = 3, the number of trips completed by each bus are [3,1,1]. 
+  The total number of trips completed is 3 + 1 + 1 = 5.
+So the minimum time needed for all buses to complete at least 5 trips is 3.
+Example 2:
+
+Input: time = [2], totalTrips = 1
+Output: 2
+Explanation:
+There is only one bus, and it will complete its first trip at t = 2.
+So the minimum time needed to complete 1 trip is 2.
+ 
+
+Constraints:
+
+1 <= time.length <= 105
+1 <= time[i], totalTrips <= 107
+Accepted
+31.7K
+Submissions
+97.9K
+Acceptance Rate
+32.4%
+
+
+
+
+C++ || Binary Search || Commented Code || Explained Approach
+_prabal_singh_
+100 Days Badge 2022
+12
+a minute ago
+Intuition
+Binary Search after sorting the time array.
+
+Approach
+Firstly, we will sort the given time array.
+Secondly, we will evaluate the max range for binary search that will be the product of max value in time array & totalTrips to be done.
+Thirdly, apply binary search on 0 -> above product value , AND for every mid value : evaluate the number of trips possible by dividing the mid with time value at each index.
+if value < totaltrips , start = mid + 1;
+else , end = mid - 1;
+keep a res variable to track the least value of mid that can be a possible answer.
+download (2).jfif
+
+Complexity
+Time complexity : O( log( totalTrips*max(time) ) * n )
+Space complexity : O(1)
+Code
+class Solution {
+public:
+    long long minimumTime(vector<int>& time, int totalTrips) {
+        int n = time.size();
+        //sorting the time array
+        sort(time.begin(), time.end());
+
+        //initializing variable for binary search
+        long long tt = totalTrips;
+        long long mt = time[n-1];
+        long long mxt = tt * mt ;
+        long long start = 0;
+        long long end = mxt;
+
+        long long res = LLONG_MAX;
+
+        //binary serach
+        while(start <= end) {
+            long long mid = start + ((end-start) / 2);
+
+            //evaluating the number of trips possible with current value of  mid 
+            long long curr = 0;
+            for(int i=0; i<n; i++)  {
+                if(mid/time[i]==0)
+                    break;
+                curr += mid / time[i] ;
+            }
+            
+            //case for search in lower half 
+            if(curr < tt)
+                start = mid + 1;
+
+            //case for search in upper half 
+            else if(curr >= tt) {
+                res = min(res,mid);
+                end = mid - 1;
+            }
+        }
+
+        return res;
+    }
+};
+sad-thumbs-up-cat.3.meme.webp
+
+images.jfif
+
+0
+0
+
