@@ -1,0 +1,83 @@
+1721. Swapping Nodes in a Linked List
+Medium
+4.2K
+138
+Companies
+You are given the head of a linked list, and an integer k.
+
+Return the head of the linked list after swapping the values of the kth node from the beginning and the kth node from the end (the list is 1-indexed).
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5], k = 2
+Output: [1,4,3,2,5]
+Example 2:
+
+Input: head = [7,9,6,6,7,8,3,0,9,5], k = 5
+Output: [7,9,6,6,8,7,3,0,9,5]
+ 
+
+Constraints:
+
+The number of nodes in the list is n.
+1 <= k <= n <= 105
+0 <= Node.val <= 100
+Accepted
+237.4K
+Submissions
+348.4K
+Acceptance Rate
+68.1%
+
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapNodes(ListNode* head, int k) {
+        ListNode *itr = head, *temp1 = head, *temp2 = head;
+        int cnt = 1;
+
+        while(itr!=NULL)    {
+            itr = itr->next;
+            if(cnt<k)
+                temp1 = temp1->next;
+            cnt++;
+        }
+
+        // cout<<temp1->val<<" "<<cnt<<"\n";
+
+        int sec = cnt - k;
+        int cnt2 = 1;
+
+        while(temp2!=NULL )    {
+            if(cnt2==sec)
+                break;
+            temp2 = temp2->next;            
+            cnt2++;
+        }
+
+        // cout<<sec<<" "<<temp2->val<<"\n";
+
+        int t = temp1->val;
+        temp1->val = temp2->val;
+        temp2->val = t;
+
+        return head;
+    }
+};
+
+
+
