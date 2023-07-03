@@ -1,0 +1,82 @@
+859. Buddy Strings
+Easy
+2.1K
+1.3K
+Given two strings s and goal, return true if you can swap two letters in s so the result is equal to goal, otherwise, return false.
+
+Swapping letters is defined as taking two indices i and j (0-indexed) such that i != j and swapping the characters at s[i] and s[j].
+
+For example, swapping at indices 0 and 2 in "abcd" results in "cbad".
+ 
+
+Example 1:
+
+Input: s = "ab", goal = "ba"
+Output: true
+Explanation: You can swap s[0] = 'a' and s[1] = 'b' to get "ba", which is equal to goal.
+Example 2:
+
+Input: s = "ab", goal = "ab"
+Output: false
+Explanation: The only letters you can swap are s[0] = 'a' and s[1] = 'b', which results in "ba" != goal.
+Example 3:
+
+Input: s = "aa", goal = "aa"
+Output: true
+Explanation: You can swap s[0] = 'a' and s[1] = 'a' to get "aa", which is equal to goal.
+ 
+
+Constraints:
+
+1 <= s.length, goal.length <= 2 * 104
+s and goal consist of lowercase letters.
+162.7K
+536.4K
+30.3%
+
+
+
+class Solution {
+public:
+    bool buddyStrings(string s, string goal) {
+        if(s.size()!=goal.size() || s.size()==1 || goal.size()==1 )    
+            return false;
+
+        int diff = 0;
+        unordered_map<int,int> mp;
+        int n = s.size();
+        vector<int> v;
+
+        for(int i=0; i<n; i++)   {
+            if(s[i]!=goal[i])
+                diff++;
+            mp[s[i]]++;
+        }
+
+        if(diff==2) {
+            for(int i=0; i<n; i++)   {
+                if(s[i]!=goal[i])
+                    v.push_back(i);
+            }
+
+            if( s[v[0]]==goal[v[1]] && s[v[1]]==goal[v[0]] )
+                return true;
+            return false;
+        }
+
+        if(diff > 2 || diff == 1)    
+            return false;
+        
+        if(diff==0) {
+            int pair = 0;
+            for(auto it : mp)   {
+                if(it.second >= 2)  {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return false;
+    }
+};
